@@ -1,0 +1,3 @@
+db.message.insertOne({ "memberNo": 3333, "text": "첫번째 메시지", "chatRoomId": 3636});
+db.message.insertOne({ "memberNo": 6666, "text": "두번째 메시지", "chatRoomId": 3636});
+db.message.insertOne({ "memberNo": 3333, "text": "세번째 메시지", "chatRoomId": 3636});
