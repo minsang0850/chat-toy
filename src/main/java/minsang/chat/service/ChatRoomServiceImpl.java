@@ -45,7 +45,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
      */
     @Override
     public ChatRoomSummaries getChatRoomSummaries(long memberNo) {
-        var chatters = chatterRepository.findAllByMember_Id(memberNo);
+        var chatters = chatterRepository.findAllByMember_MemberNo(memberNo);
         var chatRoomIds = chatters.stream()
                 .map(chatter -> chatter.getChatRoom().getId())
                 .toList();
@@ -74,7 +74,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
         if (chatRoom.isEmpty()) {
             return ChatRoomSummary.emptyOf();
         }
-        var chatter = chatterRepository.findByMember_IdAndChatRoom_Id(memberNo, chatRoomId);
+        var chatter = chatterRepository.findByMember_MemberNoAndChatRoom_Id(memberNo, chatRoomId);
         return ChatRoomSummary.of(chatter, chatRoom.get().getChattersCount());
     }
 
@@ -108,7 +108,7 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Override
     @Transactional
     public void exit(long chatRoomId, long memberNo) {
-        chatterRepository.deleteChattersByIdAndMember_Id(chatRoomId, memberNo);
+        chatterRepository.deleteChattersByIdAndMember_MemberNo(chatRoomId, memberNo);
         chatRoomRepositroy.decrementChattersCount(chatRoomId);
     }
 }

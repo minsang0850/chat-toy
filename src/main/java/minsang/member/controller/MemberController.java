@@ -2,10 +2,9 @@ package minsang.member.controller;
 
 import lombok.RequiredArgsConstructor;
 import minsang.member.domain.MemberDTO;
+import minsang.member.domain.SignInDTO;
 import minsang.member.service.MemberService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Deprecated
 @RequiredArgsConstructor
@@ -14,12 +13,9 @@ public class MemberController {
 
 	private final MemberService memberService;
 
-	@GetMapping("/message/members/{memberNo}")
-	public MemberDTO getMember(@PathVariable long memberNo) {
-		if (memberNo <= 0) {
-			return MemberDTO.emptyOf();
-		}
-		return memberService.getMember(memberNo);
+	@PostMapping("/sign-in")
+	public MemberDTO signIn(@RequestBody SignInDTO signInDTO) {
+		return memberService.signIn(signInDTO);
 	}
 
 }

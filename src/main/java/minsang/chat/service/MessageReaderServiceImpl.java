@@ -59,7 +59,7 @@ public class MessageReaderServiceImpl implements MessageReaderService {
      * @param latestMessage
      */
     private void updateReadMessageNo(ChatMessageDTO param, Message latestMessage) {
-        var chatter = chatterRepository.findByChatRoom_IdAndMember_Id(
+        var chatter = chatterRepository.findByChatRoom_IdAndMember_MemberNo(
                 param.chatRoomId(),
                 param.memberNo());
         chatter.setReadMessageNo(latestMessage.getId());

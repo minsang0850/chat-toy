@@ -6,6 +6,8 @@ create table members
 (
     member_no   bigint not null,
     member_name varchar(255),
+    member_id varchar(255),
+    password varchar(255),
     primary key (member_no)
 );
 create table chat_room
@@ -24,10 +26,10 @@ create table chatter
     primary key (chatter_id)
 );
 
-insert into members (member_no, member_name)
-values (1, 'min');
-insert into members (member_no, member_name)
-values (2, 'sang');
+insert into members (member_no, member_name, member_id, password)
+values (1, 'min', 'min', '1234');
+insert into members (member_no, member_name, member_id, password)
+values (2, 'sang', 'sang', '1234');
 
 insert into chat_room (chat_room_id, chatters_count)
 values (1, 2);

@@ -33,7 +33,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public void saveMessage(ChatMessageDTO message) {
         Message savedMessage = getSavedMessage(message);
-        var chatter = chatterRepository.findByChatRoom_IdAndMember_Id(message.chatRoomId(), message.memberNo());
+        var chatter = chatterRepository.findByChatRoom_IdAndMember_MemberNo(message.chatRoomId(), message.memberNo());
         chatter.setReadMessageNo(savedMessage.getId());
         chatterRepository.save(chatter);
         messageReaderService.save(savedMessage.getId(), savedMessage.getMemberNo(), savedMessage.getChatRoomId());
