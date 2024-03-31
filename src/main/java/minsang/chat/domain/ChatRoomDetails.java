@@ -9,7 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 @Builder
-public record ChatRoomDetails(List<ChatRoomDetail> chatRoomDetails) {
+public record ChatRoomDetails(
+        List<ChatRoomDetail> chatRoomDetails
+) {
 
     public static ChatRoomDetails of(List<Chatter> chatters,
                                      Map<Long, ChatRoom> chatRoomsMap,
@@ -31,12 +33,5 @@ public record ChatRoomDetails(List<ChatRoomDetail> chatRoomDetails) {
         return ChatRoomDetails.builder()
                 .chatRoomDetails(chatRoomSummaries)
                 .build();
-    }
-
-    public int getSize() {
-        if (CollectionUtils.isEmpty(chatRoomDetails)) {
-            return 0;
-        }
-        return this.chatRoomDetails.size();
     }
 }
