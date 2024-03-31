@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import minsang.chat.controller.dto.ChatRoomRegisterParam;
 import minsang.chat.controller.dto.ChatRoomRegisterResponse;
-import minsang.chat.domain.ChatRoomSummaries;
-import minsang.chat.domain.ChatRoomSummary;
+import minsang.chat.domain.ChatRoomDetails;
+import minsang.chat.domain.ChatRoomDetail;
 import minsang.chat.entity.ChatRoom;
 import minsang.chat.entity.Chatter;
 import minsang.chat.repository.ChatRoomRepositroy;
@@ -37,14 +37,13 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     private final MessageMongoReposiory messageMongoReposiory;
 
     /**
-     * 채팅방들의 기본 정보를 가져옴
-     * 최근 메시지 Map, 안읽은 메시지 Map, 채팅방들을 가져와서 summaries로 리턴
+     * 채팅방, 메시지를 가져옴
      *
      * @param memberNo
      * @return
      */
     @Override
-    public ChatRoomSummaries getChatRoomSummaries(long memberNo) {
+    public ChatRoomDetails getChatRoomsWithMessage(long memberNo) {
         var chatters = chatterRepository.findAllByMember_MemberNo(memberNo);
         var chatRoomIds = chatters.stream()
                 .map(chatter -> chatter.getChatRoom().getId())
@@ -53,9 +52,8 @@ public class ChatRoomServiceImpl implements ChatRoomService {
                 .map(Chatter::getChatRoom)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toMap(ChatRoom::getId, Function.identity()));
-        var latestMessagesMap = messageService.getLatestMessagesMap(chatRoomIds);
-        var unReadCountsMap = getUnReadCountsMap(chatters);
-        return ChatRoomSummaries.of(chatters, chatRoomsMap, latestMessagesMap, unReadCountsMap);
+        var messagesMap = messageService.getChatRoomsMessages(chatRoomIds);
+        return ChatRoomDetails.of(chatters, chatRoomsMap, messagesMap);
     }
 
     private Map<Long, Long> getUnReadCountsMap(List<Chatter> chatters) {
@@ -69,13 +67,13 @@ public class ChatRoomServiceImpl implements ChatRoomService {
 
     @Override
     @Transactional
-    public ChatRoomSummary getChatRoom(long chatRoomId, long memberNo) {
+    public ChatRoomDetail getChatRoom(long chatRoomId, long memberNo) {
         var chatRoom = chatRoomRepositroy.findById(chatRoomId);
         if (chatRoom.isEmpty()) {
-            return ChatRoomSummary.emptyOf();
+            return ChatRoomDetail.emptyOf();
         }
         var chatter = chatterRepository.findByMember_MemberNoAndChatRoom_Id(memberNo, chatRoomId);
-        return ChatRoomSummary.of(chatter, chatRoom.get().getChattersCount());
+        return ChatRoomDetail.of(chatter, chatRoom.get().getChattersCount());
     }
 
     @Override

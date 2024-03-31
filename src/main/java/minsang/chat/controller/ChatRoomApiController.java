@@ -6,7 +6,7 @@ import minsang.chat.controller.dto.ChatRoomRegisterParam;
 import minsang.chat.controller.dto.ChatRoomRegisterResponse;
 import minsang.chat.controller.dto.ChatRoomWithMessageDTO;
 import minsang.chat.domain.ChatMessageDTO;
-import minsang.chat.domain.ChatRoomSummaries;
+import minsang.chat.domain.ChatRoomDetails;
 import minsang.chat.service.ChatRoomService;
 import minsang.chat.service.MessageService;
 import minsang.member.service.MemberService;
@@ -23,8 +23,8 @@ public class ChatRoomApiController {
     private final KafkaTemplate<String, ChatMessageDTO> kafkaTemplate;
 
     @GetMapping("/message/v1/chatRooms")
-    public ChatRoomSummaries getChatRoomSummaries(@RequestParam("memberNo") long memberNo) {
-        return chatRoomService.getChatRoomSummaries(memberNo);
+    public ChatRoomDetails getChatRoomsWithMessage(@RequestParam("memberNo") long memberNo) {
+        return chatRoomService.getChatRoomsWithMessage(memberNo);
     }
 
     @GetMapping("/message/v1/chatRooms/{chatRoomId}")

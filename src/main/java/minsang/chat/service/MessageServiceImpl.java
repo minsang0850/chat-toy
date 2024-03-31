@@ -68,4 +68,20 @@ public class MessageServiceImpl implements MessageService {
                 .filter(LatestMessageDTO::isNotEmpty)
                 .collect(Collectors.toMap(LatestMessageDTO::chatRoomId, Function.identity()));
     }
+
+    @Override
+    public Map<Long, List<ChatMessageDTO>> getChatRoomsMessages(List<Long> chatRoomIds) {
+        return chatRoomIds.stream()
+                .collect(Collectors.toMap(Function.identity(), this::getMessages));
+    }
+
+    private List<ChatMessageDTO> getMessages(long chatRoomId) {
+        var messages = messageMongoReposiory.findAllByChatRoomIdOrderByCreateDate(chatRoomId);
+        if (CollectionUtils.isEmpty(messages)) {
+            return List.of();
+        }
+        return messages.stream()
+                .map(ChatMessageDTO::from)
+                .toList();
+    }
 }

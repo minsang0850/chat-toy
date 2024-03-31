@@ -16,6 +16,16 @@ public record ChatMessageDTO(
         Set<Long> readerNos
 ) {
 
+    public static ChatMessageDTO from(Message message) {
+        return ChatMessageDTO.builder()
+                .chatRoomId(message.getChatRoomId())
+                .memberNo(message.getMemberNo())
+                .memberName(message.getMemberName())
+                .text(message.getText())
+                .createdate(MessageDateFormatter.aHmmToString(message.getCreateDate()))
+                .build();
+    }
+
     public static ChatMessageDTO of(Message message, Set<Long> readerNos) {
         return ChatMessageDTO.builder()
                 .chatRoomId(message.getChatRoomId())

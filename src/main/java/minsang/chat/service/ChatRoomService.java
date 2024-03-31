@@ -3,14 +3,14 @@ package minsang.chat.service;
 
 import minsang.chat.controller.dto.ChatRoomRegisterParam;
 import minsang.chat.controller.dto.ChatRoomRegisterResponse;
-import minsang.chat.domain.ChatRoomSummaries;
-import minsang.chat.domain.ChatRoomSummary;
+import minsang.chat.domain.ChatRoomDetails;
+import minsang.chat.domain.ChatRoomDetail;
 
 public interface ChatRoomService {
 
-	ChatRoomSummaries getChatRoomSummaries(long memberNo);
+	ChatRoomDetails getChatRoomsWithMessage(long memberNo);
 
-	ChatRoomSummary getChatRoom(long chatRoomId, long memberNo);
+	ChatRoomDetail getChatRoom(long chatRoomId, long memberNo);
 
 	ChatRoomRegisterResponse registerChatRoom(ChatRoomRegisterParam param);
 

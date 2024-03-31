@@ -13,4 +13,6 @@ public interface MessageService {
 	List<ChatMessageDTO> getPreviousMessage(long chatRoomId);
 
 	Map<Long, LatestMessageDTO> getLatestMessagesMap(List<Long> chatRoomIds);
+
+	Map<Long, List<ChatMessageDTO>> getChatRoomsMessages(List<Long> chatRoomIds);
 }
