@@ -18,7 +18,7 @@ public class KafkaConsumer {
 	private final MessageReaderService messageReaderService;
 	private final ChatRoomService chatRoomService;
 
-	@KafkaListener(topics = "chat", groupId = "message", containerFactory = "messageListner")
+	@KafkaListener(topics = "chat", groupId = "chat_message", containerFactory = "messageListner")
 	public void consumeChat(ChatMessageDTO message) {
 		//메시지 저장
 		messageService.saveMessage(message);

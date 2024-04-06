@@ -40,7 +40,7 @@ spring:
   kafka:
     bootstrap-servers: localhost:29092
     consumer:
-      group-id: message
+      group-id: chat_message
 
 logging.level:
   org.hibernate.SQL: debug

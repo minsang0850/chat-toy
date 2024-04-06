@@ -19,6 +19,8 @@ public class KafkaConsumerConfiguration {
 
 	@Value("${spring.kafka.bootstrap-servers}")
 	private String bootstrapServers;
+	@Value("${spring.kafka.consumer.group-id}")
+	private String groupId;
 
 	@Bean
 	public ConcurrentKafkaListenerContainerFactory<String, ChatMessageDTO> messageListner() {
@@ -37,7 +39,7 @@ public class KafkaConsumerConfiguration {
 
 		Map<String, Object> configurations = new HashMap<>();
 		configurations.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-		configurations.put(ConsumerConfig.GROUP_ID_CONFIG, "message");
+		configurations.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
 		configurations.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
 		configurations.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
 		return configurations;
