@@ -9,7 +9,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
+import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
+import org.springframework.util.backoff.BackOff;
+import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +29,17 @@ public class KafkaConsumerConfiguration {
 	public ConcurrentKafkaListenerContainerFactory<String, ChatMessageDTO> messageListner() {
 		ConcurrentKafkaListenerContainerFactory<String, ChatMessageDTO> factory = new ConcurrentKafkaListenerContainerFactory<>();
 		factory.setConsumerFactory(consumerFactory());
+		factory.setCommonErrorHandler(errorHandler());
 		return factory;
+	}
+
+	@Bean
+	public DefaultErrorHandler errorHandler() {
+		BackOff fixedBackOff = new FixedBackOff(5, 5);
+		DefaultErrorHandler errorHandler = new DefaultErrorHandler((consumerRecord, exception) -> {
+			// logic to execute when all the retry attemps are exhausted
+		}, fixedBackOff);
+		return errorHandler;
 	}
 
 	@Bean
