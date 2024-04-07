@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface MessageService {
-	void saveMessage(ChatMessageDTO message);
+	ChatMessageDTO saveMessage(ChatMessageDTO message);
 
 	List<ChatMessageDTO> getPreviousMessage(long chatRoomId);
 

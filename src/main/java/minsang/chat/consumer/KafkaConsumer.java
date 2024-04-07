@@ -8,6 +8,7 @@ import minsang.chat.service.MessageService;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -19,11 +20,12 @@ public class KafkaConsumer {
 	private final ChatRoomService chatRoomService;
 
 	@KafkaListener(topics = "chat", groupId = "chat_message", containerFactory = "messageListner")
+	@Transactional
 	public void consumeChat(ChatMessageDTO message) {
 		//메시지 저장
-		messageService.saveMessage(message);
+		var savedMessage = messageService.saveMessage(message);
 		//웹소켓 메시지 전송
-		template.convertAndSend("/sub/chat/room/" + message.chatRoomId(), message);
+		template.convertAndSend("/sub/members/" + savedMessage.memberNo(), savedMessage);
 	}
 
 	@KafkaListener(topics = "chatRoomEnter", groupId = "message", containerFactory = "messageListner")
